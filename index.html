@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bizim Sayaç ❤️</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    min-height:100vh;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    color:white;
+    background:
+    radial-gradient(circle at 20% 20%,#4b164c 0%,transparent 35%),
+    radial-gradient(circle at 80% 80%,#171c54 0%,transparent 40%),
+    linear-gradient(135deg,#090414,#16091e,#080d24);
+}
+
+/* YILDIZLAR */
+.stars{position:fixed;inset:0;pointer-events:none}
+.star{
+    position:absolute;
+    width:2px;height:2px;
+    background:white;
+    border-radius:50%;
+    animation:twinkle 3s infinite alternate;
+}
+@keyframes twinkle{
+    from{opacity:.2;transform:scale(.7)}
+    to{opacity:1;transform:scale(1.5)}
+}
+
+/* KALPLER */
+.heart{
+    position:fixed;
+    bottom:-30px;
+    pointer-events:none;
+    animation:floatUp linear forwards;
+    opacity:.7;
+}
+@keyframes floatUp{
+    0%{transform:translateY(0) scale(.7);opacity:0}
+    15%{opacity:.8}
+    100%{transform:translateY(-110vh) scale(1.5) rotate(25deg);opacity:0}
+}
+
+/* GENEL */
+.container{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    position:relative;
+    z-index:2;
+}
+
+/* KİLİT */
+.lock{
+    width:min(90%,420px);
+    padding:40px 25px;
+    text-align:center;
+    border-radius:30px;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.15);
+    backdrop-filter:blur(18px);
+    box-shadow:0 20px 80px rgba(0,0,0,.5);
+    animation:appear 1s ease;
+    transition:.5s;
+}
+
+@keyframes appear{
+    from{opacity:0;transform:translateY(30px) scale(.9)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.scan-title{
+    font-size:29px;
+    margin-bottom:28px;
+}
+
+.fingerprint{
+    width:130px;
+    height:130px;
+    margin:auto;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:62px;
+    cursor:pointer;
+    background:rgba(255,80,170,.08);
+    border:2px solid rgba(255,130,200,.6);
+    box-shadow:0 0 30px rgba(255,70,170,.3);
+    transition:.3s;
+}
+
+.fingerprint:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 55px rgba(255,70,170,.65);
+}
+
+.fingerprint:active{
+    transform:scale(.9);
+}
+
+.scan-text{
+    margin-top:25px;
+    opacity:.7;
+}
+
+.progress{
+    width:0%;
+    height:4px;
+    margin:22px auto 0;
+    border-radius:10px;
+    background:#ff72bd;
+    box-shadow:0 0 15px #ff72bd;
+    transition:width 2s linear;
+}
+
+/* ANA SAYFA */
+.main{
+    display:none;
+    width:min(94%,850px);
+    text-align:center;
+    animation:mainIn 1.2s ease;
+}
+
+@keyframes mainIn{
+    from{opacity:0;transform:scale(.8)}
+    to{opacity:1;transform:scale(1)}
+}
+
+.subtitle{
+    font-size:14px;
+    letter-spacing:3px;
+    opacity:.6;
+}
+
+h1{
+    margin-top:12px;
+    font-size:clamp(42px,10vw,78px);
+    background:linear-gradient(90deg,#fff,#ff9ed6,#fff);
+    background-size:200%;
+    -webkit-background-clip:text;
+    color:transparent;
+    animation:shine 4s linear infinite;
+}
+
+@keyframes shine{
+    to{background-position:200%}
+}
+
+.date{
+    margin-top:10px;
+    opacity:.6;
+}
+
+.counter{
+    margin-top:35px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.box{
+    padding:25px 10px;
+    border-radius:22px;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.12);
+    backdrop-filter:blur(12px);
+    box-shadow:0 15px 50px rgba(0,0,0,.25);
+}
+
+.number{
+    font-size:clamp(30px,7vw,52px);
+    font-weight:bold;
+}
+
+.label{
+    margin-top:8px;
+    font-size:11px;
+    letter-spacing:1px;
+    opacity:.5;
+}
+
+.info{
+    margin-top:30px;
+    font-size:17px;
+    opacity:.75;
+}
+
+.secret-btn{
+    margin-top:25px;
+    padding:14px 27px;
+    color:white;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,150,210,.35);
+    border-radius:50px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.secret-btn:hover{
+    transform:translateY(-3px);
+    background:rgba(255,100,180,.16);
+}
+
+/* GİZLİ MESAJ */
+.secret{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:10;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(10px);
+}
+
+.card{
+    width:min(92%,520px);
+    padding:40px 28px;
+    text-align:center;
+    border-radius:30px;
+    background:linear-gradient(145deg,#28102e,#10152e);
+    border:1px solid rgba(255,150,210,.3);
+    box-shadow:0 30px 100px rgba(0,0,0,.6);
+    animation:appear .6s ease;
+}
+
+.card h2{
+    font-size:31px;
+    margin-bottom:22px;
+}
+
+.card p{
+    line-height:1.9;
+    opacity:.85;
+    font-size:17px;
+}
+
+.close{
+    margin-top:25px;
+    padding:11px 25px;
+    border:0;
+    border-radius:30px;
+    cursor:pointer;
+}
+
+@media(max-width:600px){
+    .counter{grid-template-columns:repeat(2,1fr)}
+    .box{padding:20px 8px}
+    .info{font-size:15px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+
+<!-- PARMAK İZİ EKRANI -->
+<div class="lock" id="lock">
+
+    <div class="scan-title">
+        Parmak İzi Taraması
+    </div>
+
+    <div class="fingerprint" id="fingerprint" onclick="scan()">
+        🖐️
+    </div>
+
+    <div class="scan-text" id="scanText">
+        Taramayı başlatmak için dokun
+    </div>
+
+    <div class="progress" id="progress"></div>
+
+</div>
+
+<!-- SAYAC -->
+<div class="main" id="main">
+
+    <div class="subtitle">
+        29 AĞUSTOS 2026'DAN BERİ
+    </div>
+
+    <h1>Bizim Sayaç ❤️</h1>
+
+    <div class="date">
+        Zaman geçiyor...
+    </div>
+
+    <div class="counter">
+
+        <div class="box">
+            <div class="number" id="days">0</div>
+            <div class="label">GÜN</div>
+        </div>
+
+        <div class="box">
+            <div class="number" id="hours">00</div>
+            <div class="label">SAAT</div>
+        </div>
+
+        <div class="box">
+            <div class="number" id="minutes">00</div>
+            <div class="label">DAKİKA</div>
+        </div>
+
+        <div class="box">
+            <div class="number" id="seconds">00</div>
+            <div class="label">SANİYE</div>
+        </div>
+
+    </div>
+
+    <div class="info">
+        Bakalım bu sayaç daha ne kadar ilerleyecek... 👀
+    </div>
+
+    <button class="secret-btn" onclick="openSecret()">
+        💌 Gizli Mesaj
+    </button>
+
+</div>
+
+</div>
+
+<!-- GİZLİ MESAJ -->
+<div class="secret" id="secret">
+
+    <div class="card">
+
+        <h2>Eylül ❤️</h2>
+
+        <p>
+            Sana bunu belki her zaman söylemiyorum ama
+            seni gerçekten çok seviyorum.
+            <br><br>
+            Benim için sadece hayatımda bulunan biri değilsin;
+            benim için gerçekten çok değerlisin.
+            <br><br>
+            Seninle konuşmak, gülmek ve güzel zaman geçirmek
+            benim için düşündüğünden çok daha önemli.
+            <br><br>
+            Kısacası Eylül,
+            seni ne kadar sevdiğimi kelimelerle tamamen
+            anlatmam zor ama bilmeni istediğim bir şey var:
+            <br><br>
+            <strong>
+            Benim için gerçekten çok özelsin. ❤️
+            </strong>
+        </p>
+
+        <button class="close" onclick="closeSecret()">
+            Kapat
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* YILDIZLAR */
+for(let i=0;i<120;i++){
+
+    const star=document.createElement("div");
+
+    star.className="star";
+
+    star.style.left=Math.random()*100+"%";
+    star.style.top=Math.random()*100+"%";
+    star.style.animationDelay=Math.random()*3+"s";
+
+    document.getElementById("stars").appendChild(star);
+}
+
+
+/* KALPLER */
+function createHeart(){
+
+    const heart=document.createElement("div");
+
+    heart.className="heart";
+
+    const list=["❤️","💕","💗","💖","💘"];
+
+    heart.innerHTML=list[Math.floor(Math.random()*list.length)];
+
+    heart.style.left=Math.random()*100+"%";
+    heart.style.fontSize=(12+Math.random()*15)+"px";
+    heart.style.animationDuration=(5+Math.random()*6)+"s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>{
+        heart.remove();
+    },11000);
+}
+
+setInterval(createHeart,700);
+
+
+/* PARMAK İZİ TARAMASI */
+let scanning=false;
+
+function scan(){
+
+    if(scanning)return;
+
+    scanning=true;
+
+    const text=document.getElementById("scanText");
+    const progress=document.getElementById("progress");
+    const finger=document.getElementById("fingerprint");
+
+    text.innerHTML="Parmak izi taranıyor...";
+
+    finger.style.animation="pulse .7s infinite";
+
+    progress.style.width="100%";
+
+    setTimeout(()=>{
+
+        text.innerHTML="Tarama başarılı ✓";
+
+    },1700);
+
+    setTimeout(()=>{
+
+        document.getElementById("lock").style.opacity="0";
+        document.getElementById("lock").style.transform="scale(.8)";
+
+        setTimeout(()=>{
+
+            document.getElementById("lock").style.display="none";
+            document.getElementById("main").style.display="block";
+
+            for(let i=0;i<25;i++){
+                setTimeout(createHeart,i*50);
+            }
+
+        },500);
+
+    },2300);
+}
+
+
+/* BAŞLANGIÇ TARİHİ */
+const startDate=new Date("2026-08-29T00:00:00");
+
+function updateCounter(){
+
+    const now=new Date();
+
+    let difference=now-startDate;
+
+    if(difference<0)difference=0;
+
+    const totalSeconds=Math.floor(difference/1000);
+
+    const days=Math.floor(totalSeconds/86400);
+
+    const hours=Math.floor((totalSeconds%86400)/3600);
+
+    const minutes=Math.floor((totalSeconds%3600)/60);
+
+    const seconds=totalSeconds%60;
+
+    document.getElementById("days").textContent=days;
+
+    document.getElementById("hours").textContent=
+        String(hours).padStart(2,"0");
+
+    document.getElementById("minutes").textContent=
+        String(minutes).padStart(2,"0");
+
+    document.getElementById("seconds").textContent=
+        String(seconds).padStart(2,"0");
+}
+
+updateCounter();
+
+setInterval(updateCounter,1000);
+
+
+/* GİZLİ MESAJ */
+function openSecret(){
+
+    document.getElementById("secret").style.display="flex";
+
+}
+
+function closeSecret(){
+
+    document.getElementById("secret").style.display="none";
+
+}
+
+</script>
+
+<style>
+@keyframes pulse{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.08);box-shadow:0 0 70px rgba(255,70,170,.9)}
+    100%{transform:scale(1)}
+}
+</style>
+
+</body>
+</html>
